@@ -113,8 +113,6 @@ async def download_comments(days):
     tr = 0
     for comment in comments:
         tr += 1
-        print('comment', comment)
-
         table_number = comment['table_number']
         comment1 = comment['comment']
         created_at = comment['created_at']
@@ -143,7 +141,6 @@ async def get_category(call: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(category_callback_data.filter(), state="*")
 async def get_days(call: types.CallbackQuery, state: FSMContext, callback_data: dict):
-    print('callback_data', callback_data)
     category = callback_data.get('category')
     await state.update_data(category=category)
     await call.message.edit_text(text="📅 Necha kunlik natijalarni yuklab olmoqchisiz?\n"
@@ -162,7 +159,6 @@ async def download_function(message: types.Message, state: FSMContext):
     await state.update_data(days=days)
 
     data = await state.get_data()
-    print('data', data)
     category = data.get("category")
 
     if category == 'waiter':
