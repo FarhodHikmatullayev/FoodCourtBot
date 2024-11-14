@@ -10,8 +10,8 @@ from states.table_states import TableState
 @dp.message_handler(CommandStart(), state="*")
 async def bot_start(message: types.Message, state: FSMContext):
     user_telegram_id = message.from_user.id
-    chat_id = message.chat.id
-    await message.answer(text=chat_id)
+    # chat_id = message.chat.id
+    # await message.answer(text=chat_id)
     full_name = message.from_user.full_name
     username = message.from_user.username
     users = await db.select_users(telegram_id=user_telegram_id)
