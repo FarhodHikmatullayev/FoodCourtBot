@@ -5,6 +5,7 @@ from data.config import GROUP_CHAT_ID
 from keyboards.default.menu_keyboards import back_to_menu
 from keyboards.inline.confirmation import confirm_keyboard
 from keyboards.inline.menu import menu_callback_data
+from keyboards.inline.web_pages import web_pages_inline_keyboard
 from loader import dp, db, bot
 from states.table_states import TableState, FoodState, WaiterState, CommentState
 
@@ -34,6 +35,7 @@ async def send_comment(call: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='yes', state=CommentState.comment)
 async def confirm_saving_comment(call: types.CallbackQuery, state: FSMContext):
+    user_telegram_id = call.from_user.id
     data = await state.get_data()
     comment = data.get('comment')
     table_number = data.get('table_number')
@@ -51,6 +53,9 @@ async def confirm_saving_comment(call: types.CallbackQuery, state: FSMContext):
 
     await call.message.answer(text="✅ Fikringiz/Taklifingiz yuborildi", reply_markup=back_to_menu)
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+    await bot.send_message(chat_id=user_telegram_id,
+                           text="Maxsus chegirma va takliflarimiz o’tkazib yubormaslik uchun sahifalarimizni kuzatib boring! 👇",
+                           reply_markup=web_pages_inline_keyboard)
     await TableState.table_number.set()
 
 

@@ -5,6 +5,7 @@ from keyboards.default.menu_keyboards import back_to_menu
 from keyboards.inline.confirmation import confirm_keyboard
 from keyboards.inline.mark_keyboards import marks_keyboard
 from keyboards.inline.menu import menu_callback_data
+from keyboards.inline.web_pages import web_pages_inline_keyboard
 from loader import dp, db, bot
 from states.table_states import TableState, FoodState
 
@@ -34,6 +35,7 @@ async def send_food_comment(call: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='yes', state=FoodState.grade)
 async def confirm_saving_food_comment(call: types.CallbackQuery, state: FSMContext):
+    user_telegram_id = call.from_user.id
     data = await state.get_data()
     grade = data.get('grade')
     table_number = data.get('table_number')
@@ -46,6 +48,9 @@ async def confirm_saving_food_comment(call: types.CallbackQuery, state: FSMConte
     )
     await call.message.answer(text="✅ Yuborildi", reply_markup=back_to_menu)
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+    await bot.send_message(chat_id=user_telegram_id,
+                           text="Maxsus chegirma va takliflarimiz o’tkazib yubormaslik uchun sahifalarimizni kuzatib boring! 👇",
+                           reply_markup=web_pages_inline_keyboard)
     await TableState.table_number.set()
 
 
