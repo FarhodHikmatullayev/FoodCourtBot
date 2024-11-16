@@ -26,7 +26,7 @@ class User(models.Model):
 
 class FoodComment(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
-    table_number = models.IntegerField(null=True, blank=True, verbose_name="Stol raqami")
+    table_number = models.CharField(max_length=4, null=True, blank=True, verbose_name="Stol raqami")
     grade = models.IntegerField(null=True, blank=True, validators=[
         MinValueValidator(1),
         MaxValueValidator(5)
@@ -45,7 +45,7 @@ class FoodComment(models.Model):
 
 class WaiterComment(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
-    table_number = models.IntegerField(null=True, blank=True, verbose_name="Stol raqami")
+    table_number = models.CharField(max_length=4, null=True, blank=True, verbose_name="Stol raqami")
     grade = models.IntegerField(null=True, blank=True, validators=[
         MinValueValidator(1),
         MaxValueValidator(5)
@@ -64,7 +64,7 @@ class WaiterComment(models.Model):
 
 class Comments(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
-    table_number = models.IntegerField(null=True, blank=True, verbose_name="Stol raqami")
+    table_number = models.CharField(max_length=4, null=True, blank=True, verbose_name="Stol raqami")
     comment = models.TextField(null=True, blank=True, verbose_name="Komentariya")
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True,
                                       verbose_name="Yaratilgan vaqti")

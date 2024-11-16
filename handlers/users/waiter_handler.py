@@ -39,7 +39,7 @@ async def confirm_saving_waiter_comment(call: types.CallbackQuery, state: FSMCon
     data = await state.get_data()
     grade = data.get('grade')
     table_number = data.get('table_number')
-    table_number = int(table_number)
+    table_number = table_number
     user_id = data.get('user_id')
     await db.create_waiter_comment(
         user_id=user_id,
