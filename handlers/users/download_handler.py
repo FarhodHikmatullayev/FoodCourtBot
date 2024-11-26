@@ -4,6 +4,7 @@ import tempfile
 import openpyxl
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from asyncpg.pgproto.pgproto import timedelta
 from openpyxl.styles import Alignment
 
 from keyboards.default.menu_keyboards import back_to_menu
@@ -37,6 +38,7 @@ async def download_food_comments(days):
         table_number = food_comment['table_number']
         grade = food_comment['grade']
         created_at = food_comment['created_at']
+        created_at = created_at + timedelta(hours=5)
 
         worksheet.cell(row=tr + 1, column=1, value=tr).alignment = Alignment(horizontal='center')
         worksheet.cell(row=tr + 1, column=2, value=table_number).alignment = Alignment(horizontal='center')
@@ -136,7 +138,7 @@ async def download_comments(days):
 async def get_category(call: types.CallbackQuery, state: FSMContext):
     await TableState.table_number.set()
     await call.message.edit_text(text="📂 Yuklab olmoqchi bo'lgan kategoriyangizni tanlang:\n",
-                              reply_markup=category_keyboard)
+                                 reply_markup=category_keyboard)
 
 
 @dp.callback_query_handler(category_callback_data.filter(), state="*")
@@ -144,7 +146,7 @@ async def get_days(call: types.CallbackQuery, state: FSMContext, callback_data: 
     category = callback_data.get('category')
     await state.update_data(category=category)
     await call.message.edit_text(text="📅 Necha kunlik natijalarni yuklab olmoqchisiz?\n"
-                                   "Misol: 20")
+                                      "Misol: 20")
     await TableState.days.set()
 
 
